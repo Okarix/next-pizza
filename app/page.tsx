@@ -1,5 +1,4 @@
-import { Container } from '@/components/shared';
-import { Categories, Title } from '@/components/shared';
+import { Container, Title, TopBar } from '@/components/shared';
 
 export default function Home() {
 	return (
@@ -10,9 +9,8 @@ export default function Home() {
 					size='lg'
 					className='font-extrabold'
 				/>
-
-				<Categories />
 			</Container>
+			<TopBar />
 		</>
 	);
 }
