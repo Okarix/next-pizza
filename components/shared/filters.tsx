@@ -12,13 +12,29 @@ interface Props {
 	className?: string;
 }
 
+interface PriceProps {
+	priceFrom: number;
+	priceTo: number;
+}
+
 export const Filters: React.FC<Props> = ({ className }) => {
 	const { ingredients, loading, selectedIds, onAddId } = useFilterIngredients();
+	const [prices, setPrice] = React.useState<PriceProps>({
+		priceFrom: 0,
+		priceTo: 3499,
+	});
 
 	const items = ingredients.map(item => ({
 		value: String(item.id),
 		text: item.name,
 	}));
+
+	const updatePrice = (name: keyof PriceProps, value: number) => {
+		setPrice({
+			...prices,
+			[name]: value,
+		});
+	};
 
 	return (
 		<div className={className}>
@@ -49,13 +65,16 @@ export const Filters: React.FC<Props> = ({ className }) => {
 						placeholder='0'
 						min={0}
 						maxLength={5000}
-						defaultValue={0}
+						value={String(prices.priceFrom)}
+						onChange={e => updatePrice('priceFrom', Number(e.target.value))}
 					/>
 					<Input
 						type='number'
 						min={100}
 						maxLength={3499}
 						placeholder='5000'
+						value={String(prices.priceTo)}
+						onChange={e => updatePrice('priceTo', Number(e.target.value))}
 					/>
 				</div>
 
@@ -63,7 +82,8 @@ export const Filters: React.FC<Props> = ({ className }) => {
 					min={0}
 					max={3499}
 					step={10}
-					value={[0, 3499]}
+					value={[prices.priceFrom, prices.priceTo]}
+					onValueChange={([priceFrom, priceTo]) => setPrice({ priceFrom, priceTo })}
 				/>
 			</div>
 
